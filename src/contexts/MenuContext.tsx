@@ -573,12 +573,12 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
     const processItemData = (doc: any) => {
       const data = doc.data();
+      const rawName =
+        data.name || data.title || data.dishname || data.itemName || "";
       const resolvedName =
-        data.name ||
-        data.title ||
-        data.dishname ||
-        data.itemName ||
-        `Item ${doc.id.substring(0, 4)}`;
+        typeof rawName === "string" && rawName.trim() !== ""
+          ? rawName
+          : `Item ${doc.id.substring(0, 4)}`;
 
       const rawPrice = data.price ?? data.itemPrice ?? data.cost ?? 0;
       const formattedPrice =
@@ -591,17 +591,22 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         ...data,
         name: resolvedName,
         description:
-          data.description ||
-          data.desc ||
-          data.descriptiom ||
-          "Delicious item freshly prepared.",
+          typeof data.description === "string" && data.description.trim() !== ""
+            ? data.description
+            : typeof data.desc === "string" && data.desc.trim() !== ""
+              ? data.desc
+              : "Delicious item freshly prepared.",
         price: formattedPrice,
         image:
-          data.image ||
-          data.imageUrl ||
-          data.imageurl ||
-          data.img ||
-          "https://images.unsplash.com/photo-1559847844-5315695dadae?q=80&w=800&auto=format&fit=crop",
+          typeof data.image === "string" && data.image.trim() !== ""
+            ? data.image
+            : typeof data.imageUrl === "string" && data.imageUrl.trim() !== ""
+              ? data.imageUrl
+              : typeof data.imageurl === "string" && data.imageurl.trim() !== ""
+                ? data.imageurl
+                : typeof data.img === "string" && data.img.trim() !== ""
+                  ? data.img
+                  : "https://images.unsplash.com/photo-1559847844-5315695dadae?q=80&w=800&auto=format&fit=crop",
         _cat: String(data.category || data.type || "").toLowerCase(),
       };
     };
@@ -615,8 +620,10 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
       const uniqueVegMap = new Map();
       mergedVeg.forEach((item) => {
-        const key = item.name.toLowerCase().trim();
-        if (!uniqueVegMap.has(key)) {
+        const key = String(item.name || "")
+          .toLowerCase()
+          .trim();
+        if (key && !uniqueVegMap.has(key)) {
           uniqueVegMap.set(key, item);
         }
       });
@@ -624,8 +631,10 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
       const uniquePrimMap = new Map();
       mergedPrim.forEach((item) => {
-        const key = item.name.toLowerCase().trim();
-        if (!uniquePrimMap.has(key)) {
+        const key = String(item.name || "")
+          .toLowerCase()
+          .trim();
+        if (key && !uniquePrimMap.has(key)) {
           uniquePrimMap.set(key, item);
         }
       });
@@ -748,12 +757,12 @@ export function MenuProvider({ children }: { children: ReactNode }) {
 
     const processOfferData = (doc: any) => {
       const data = doc.data();
+      const rawName =
+        data.name || data.title || data.dishname || data.itemName || "";
       const resolvedName =
-        data.name ||
-        data.title ||
-        data.dishname ||
-        data.itemName ||
-        `Offer ${doc.id.substring(0, 4)}`;
+        typeof rawName === "string" && rawName.trim() !== ""
+          ? rawName
+          : `Offer ${doc.id.substring(0, 4)}`;
 
       const rawPrice = data.price ?? data.itemPrice ?? data.cost ?? 0;
 
@@ -765,17 +774,22 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         subtitle: data.subtitle || data._cat || "Featured",
         offerLine: data.offerLine || "Special Offer",
         description:
-          data.description ||
-          data.desc ||
-          data.descriptiom ||
-          "Don't miss this limited time offer.",
+          typeof data.description === "string" && data.description.trim() !== ""
+            ? data.description
+            : typeof data.desc === "string" && data.desc.trim() !== ""
+              ? data.desc
+              : "Don't miss this limited time offer.",
         price: rawPrice,
         image:
-          data.image ||
-          data.imageUrl ||
-          data.imageurl ||
-          data.img ||
-          "https://images.unsplash.com/photo-1544025162-811cce401ee7?q=80&w=400&auto=format&fit=crop",
+          typeof data.image === "string" && data.image.trim() !== ""
+            ? data.image
+            : typeof data.imageUrl === "string" && data.imageUrl.trim() !== ""
+              ? data.imageUrl
+              : typeof data.imageurl === "string" && data.imageurl.trim() !== ""
+                ? data.imageurl
+                : typeof data.img === "string" && data.img.trim() !== ""
+                  ? data.img
+                  : "https://images.unsplash.com/photo-1544025162-811cce401ee7?q=80&w=400&auto=format&fit=crop",
         tags: data.tags || "Limited Time",
         cta: data.cta || "Order Now",
       } as any;
