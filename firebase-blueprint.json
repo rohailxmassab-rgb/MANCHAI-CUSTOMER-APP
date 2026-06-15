@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "MenuItem": {
+      "title": "MenuItem",
+      "description": "A food item in the menu with various potential property mappings for compatibility",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "The name of the dish" },
+        "description": { "type": "string", "description": "A brief description of the dish" },
+        "price": { "type": "string", "description": "Price as a string (e.g. $12.00)" },
+        "image": { "type": "string", "description": "Path or URL to the image" },
+        "tags": { "type": "string", "description": "Tags or category names" },
+        "bgColor": { "type": "string", "description": "Background color for UI" },
+        "rating": { "type": "number", "description": "Rating out of 5" },
+        "reviews": { "type": "number", "description": "Number of reviews" },
+        "category": { "type": "string", "description": "Category name" },
+        "timestamp": { "type": "object", "description": "Firestore timestamp" }
+      }
+    },
+    "Category": {
+      "title": "Category",
+      "description": "Featured menu categories",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "image": { "type": "string" }
+      }
+    },
+    "Offer": {
+      "title": "Offer",
+      "description": "Promotional offers",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "image": { "type": "string" },
+        "discount": { "type": "string" }
+      }
+    },
+    "Review": {
+      "title": "Review",
+      "description": "Customer reviews",
+      "type": "object",
+      "properties": {
+        "authorName": { "type": "string" },
+        "authorId": { "type": "string" },
+        "content": { "type": "string" },
+        "rating": { "type": "number" },
+        "timestamp": { "type": "object" }
+      }
+    }
+  },
+  "firestore": {
+    "dishes": { "schema": "MenuItem", "description": "Primary dishes collection" },
+    "items": { "schema": "MenuItem", "description": "Alternative dishes collection" },
+    "menu_items": { "schema": "MenuItem", "description": "Alternative dishes collection" },
+    "menu": { "schema": "MenuItem", "description": "Alternative dishes collection" },
+    "products": { "schema": "MenuItem", "description": "Alternative dishes collection" },
+    "italian": { "schema": "MenuItem", "description": "Italian specific dishes" },
+    "chinese": { "schema": "MenuItem", "description": "Chinese specific dishes" },
+    "japanese": { "schema": "MenuItem", "description": "Japanese specific dishes" },
+    "asian": { "schema": "MenuItem", "description": "Asian specific dishes" },
+    "latest": { "schema": "MenuItem", "description": "Latest added dishes" },
+    "categories": { "schema": "Category", "description": "Featured categories" },
+    "real_taste": { "schema": "MenuItem", "description": "Real taste section items" },
+    "vegetarian": { "schema": "MenuItem", "description": "Vegetarian section items" },
+    "primary": { "schema": "MenuItem", "description": "Primary section items" },
+    "dishes/categories/italian": { "schema": "MenuItem", "description": "Italian dishes under dishes/categories metadata" },
+    "dishes/categories/chinese": { "schema": "MenuItem", "description": "Chinese dishes under dishes/categories metadata" },
+    "dishes/categories/japanese": { "schema": "MenuItem", "description": "Japanese dishes under dishes/categories metadata" },
+    "dishes/categories/asian": { "schema": "MenuItem", "description": "Asian dishes under dishes/categories metadata" },
+    "dishes/categories/chines": { "schema": "MenuItem", "description": "Chinese dishes (literal typo) under dishes/categories metadata" },
+    "dishes/categories/japanes": { "schema": "MenuItem", "description": "Japanese dishes (literal typo) under dishes/categories metadata" },
+    "offers": { "schema": "Offer", "description": "Active offers" },
+    "upcoming_offers": { "schema": "Offer", "description": "Upcoming offers" },
+    "reviews": { "schema": "Review", "description": "Customer reviews" }
+  }
+}

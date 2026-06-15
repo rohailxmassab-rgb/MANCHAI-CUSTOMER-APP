@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public read for website content
+    match /dishes/{id} { allow read: if true; }
+    match /dishes/categories/italian/{id} { allow read: if true; }
+    match /dishes/categories/chinese/{id} { allow read: if true; }
+    match /dishes/categories/china/{id} { allow read: if true; }
+    match /dishes/categories/chines/{id} { allow read: if true; }
+    match /dishes/categories/japanese/{id} { allow read: if true; }
+    match /dishes/categories/japanes/{id} { allow read: if true; }
+    match /dishes/categories/asian/{id} { allow read: if true; }
+    match /items/{id} { allow read: if true; }
+    match /menu_items/{id} { allow read: if true; }
+    match /menu/{id} { allow read: if true; }
+    match /products/{id} { allow read: if true; }
+    match /italian/{id} { allow read: if true; }
+    match /chinese/{id} { allow read: if true; }
+    match /japanese/{id} { allow read: if true; }
+    match /asian/{id} { allow read: if true; }
+    match /latest/{id} { allow read: if true; }
+    match /categories/{id} { allow read: if true; }
+    match /real_taste/{id} { allow read: if true; }
+    match /vegetarian/{id} { allow read: if true; }
+    match /primary/{id} { allow read: if true; }
+    match /offers/{document=**} { allow read: if true; }
+    match /upcoming_offers/{document=**} { allow read: if true; }
+    match /featured_content/{document=**} { allow read: if true; }
+    match /reviews/{id} { 
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null && request.auth.uid == (resource == null ? request.auth.uid : resource.data.authorId);
+    }
+    match /orders/{id} { allow create, read, update: if true; }
+
+    // Admin access and fallback
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
