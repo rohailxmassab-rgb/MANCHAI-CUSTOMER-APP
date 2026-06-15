@@ -28,8 +28,8 @@ export default async function handler(req: any, res: any) {
     }));
 
     const successUrl = orderId
-      ? `${hostUrl}/success?session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}`
-      : `${hostUrl}/success?session_id={CHECKOUT_SESSION_ID}`;
+      ? `${hostUrl}/?success=true&session_id={CHECKOUT_SESSION_ID}&order_id=${orderId}`
+      : `${hostUrl}/?success=true&session_id={CHECKOUT_SESSION_ID}`;
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
