@@ -670,19 +670,68 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       });
     };
 
+    const listenToRealTasteDocs = () => {
+      const paths = [
+        { path: "featured_content/vegetarian", isVeg: true },
+        { path: "featured_content/vegetable", isVeg: true },
+        { path: "featured_content/vegeterian", isVeg: true },
+        { path: "featured_content/primary", isVeg: false },
+      ];
+
+      paths.forEach(({ path, isVeg }) => {
+        const unsub = onSnapshot(
+          doc(db, path),
+          (docSnap) => {
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              const itemsArray = Array.isArray(data.items) ? data.items : [];
+              const parsedItems = itemsArray
+                .map((item: any, idx: number) => {
+                  // Assign a fake doc-like object to use processItemData
+                  return processItemData({
+                    id: `${docSnap.id}-item-${idx}`,
+                    data: () => item,
+                  });
+                })
+                .filter(Boolean) as MenuItemData[];
+
+              if (isVeg) {
+                vegMap[path + "_doc"] = parsedItems;
+              } else {
+                primMap[path + "_doc"] = parsedItems;
+              }
+              updateCombinedRealTaste();
+            }
+          },
+          () => {},
+        );
+        rtSubscriptions.push(unsub);
+      });
+    };
+
+    listenToRealTasteDocs();
+
     // Only listen to "items" collections
     listenToRealTastePaths(
       [
         "featured_content/vegetarian/items",
         "featured_content/vegetable/items",
+        "featured_content/vegeterian/items",
         "Featured Content/vegetarian/items",
         "Featured Content/vegetable/items",
+        "vegetarian",
+        "vegeterian",
       ],
       true,
     );
 
     listenToRealTastePaths(
-      ["featured_content/primary/items", "Featured Content/primary/items"],
+      [
+        "featured_content/primary/items",
+        "Featured Content/primary/items",
+        "primary",
+        "primary_options",
+      ],
       false,
     );
 
@@ -818,6 +867,45 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       });
     };
 
+    const listenToOffersDocs = () => {
+      const paths = [
+        { path: "offers/exclusive_offers", isUpcoming: false },
+        { path: "featured_content/exclusive_offers", isUpcoming: false },
+        { path: "offers/upcoming_offers", isUpcoming: true },
+        { path: "featured_content/upcoming_offers", isUpcoming: true },
+      ];
+
+      paths.forEach(({ path, isUpcoming }) => {
+        const unsub = onSnapshot(
+          doc(db, path),
+          (docSnap) => {
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              const itemsArray = Array.isArray(data.items) ? data.items : [];
+              const parsedItems = itemsArray
+                .map((item: any, idx: number) => {
+                  return processOfferData({
+                    id: `${docSnap.id}-item-${idx}`,
+                    data: () => item,
+                  });
+                })
+                .filter(Boolean) as OfferData[];
+
+              if (isUpcoming) {
+                upcomingOffersMap[path + "_doc"] = parsedItems;
+              } else {
+                offersMap[path + "_doc"] = parsedItems;
+              }
+              updateCombinedOffers();
+            }
+          },
+          () => {},
+        );
+        rtSubscriptions.push(unsub);
+      });
+    };
+    listenToOffersDocs();
+
     // Listen to exclusive offers
     listenToOffersPath(
       [
@@ -825,6 +913,8 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         "Offers",
         "offers/exclusive_offers/items",
         "offers/exclusive_offers/dishes",
+        "featured_content/exclusive_offers/items",
+        "featured_content/offers/items",
         "exclusive_offers",
       ],
       false,
@@ -837,6 +927,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         "Upcoming Offers",
         "offers/upcoming_offers/items",
         "offers/upcoming_offers/dishes",
+        "featured_content/upcoming_offers/items",
       ],
       true,
     );
