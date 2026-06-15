@@ -731,6 +731,7 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         "Featured Content/primary/items",
         "primary",
         "primary_options",
+        "featured_content/primary_options/items",
       ],
       false,
     );
@@ -916,6 +917,8 @@ export function MenuProvider({ children }: { children: ReactNode }) {
         "featured_content/exclusive_offers/items",
         "featured_content/offers/items",
         "exclusive_offers",
+        "exclusive_offer",
+        "exclusive",
       ],
       false,
     );
@@ -925,6 +928,8 @@ export function MenuProvider({ children }: { children: ReactNode }) {
       [
         "upcoming_offers",
         "Upcoming Offers",
+        "upcoming_offer",
+        "upcoming",
         "offers/upcoming_offers/items",
         "offers/upcoming_offers/dishes",
         "featured_content/upcoming_offers/items",
